@@ -72,14 +72,20 @@
     window.matchMedia("(min-width: 1024px)").addEventListener("change", function (m) { if (m.matches && panel.classList.contains("is-open")) set(false); });
   })();
 
-  /* ── Barra fissa: nascosta mentre si vede la prima schermata ── */
+  /* ── Barra fissa: nascosta mentre si vede la prima schermata o un'area con il suo pulsante ── */
   (function dock() {
-    var d = $(".dock"), h = $("[data-hero]");
-    if (!d || !h || !("IntersectionObserver" in window)) return;
+    var d = $(".dock"), zones = $$("[data-hero], [data-nodock]");
+    if (!d || !zones.length || !("IntersectionObserver" in window)) return;
     d.classList.add("is-hidden");
-    new IntersectionObserver(function (en) {
-      d.classList.toggle("is-hidden", en[0].isIntersecting && en[0].intersectionRatio > 0.45);
-    }, { threshold: [0, 0.45, 0.6, 1] }).observe(h);
+    var hidden = new Set();
+    var io = new IntersectionObserver(function (en) {
+      en.forEach(function (x) {
+        var soglia = x.target.hasAttribute("data-hero") ? 0.45 : 0.15;
+        if (x.isIntersecting && x.intersectionRatio > soglia) hidden.add(x.target); else hidden.delete(x.target);
+      });
+      d.classList.toggle("is-hidden", hidden.size > 0);
+    }, { threshold: [0, 0.15, 0.45, 0.6, 1] });
+    zones.forEach(function (z) { io.observe(z); });
   })();
 
   /* ── Comparse allo scroll ─────────────────────────── */
@@ -278,7 +284,11 @@
     var S = SPAZI[st.spazio];
     return S.base + st.ospiti * PER_OSPITE + LUCI[st.luci].cost;
   }
-  function euro(n) { return "€ " + n.toLocaleString("it-IT"); }
+  function euro(n) {
+    var s = String(n), out = "";
+    while (s.length > 3) { out = "." + s.slice(-3) + out; s = s.slice(0, -3); }
+    return "€ " + s + out;
+  }
 
   /* Anteprima automatica in home */
   (function demo() {
@@ -461,7 +471,7 @@
       wa.href = url;
       setTimeout(function () {
         btn.disabled = false;
-        btn.textContent = "Prepara di nuovo il messaggio";
+        btn.textContent = "Prepara di nuovo";
         sent.classList.add("is-on");
         sent.scrollIntoView({ block: "nearest", behavior: reduce ? "auto" : "smooth" });
         window.location.href = url;

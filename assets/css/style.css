@@ -225,10 +225,10 @@ html.seen .opening, .opening.is-gone { display: none; }
 .js.go .phero__in > * { opacity: 1; transform: none; transition: opacity 0.7s var(--ease), transform 0.8s var(--ease); transition-delay: calc(var(--i, 0) * 0.1s); }
 
 /* ── Capitolo: quanti siete ────────────────────────── */
-.quiz { min-height: 78vh; min-height: 78svh; display: grid; align-content: center; background: var(--verde-notte); }
+.quiz { min-height: 78vh; min-height: 78svh; display: grid; grid-template-columns: minmax(0, 1fr); align-content: center; background: var(--verde-notte); }
 .quiz h2 { margin: 10px 0 6px; }
-.quiz__nums { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 34px; max-width: 640px; }
-.quiz__nums button { min-height: 84px; background: transparent; border: 1px solid rgba(217, 194, 138, 0.55); color: var(--avorio); font-family: var(--font-script); font-size: clamp(2.4rem, 9vw, 3.4rem); line-height: 1; touch-action: manipulation; transition: background-color 0.15s, color 0.15s, transform 0.1s; }
+.quiz__nums { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 34px; max-width: 640px; }
+.quiz__nums button { min-height: 84px; background: transparent; border: 1px solid rgba(217, 194, 138, 0.55); color: var(--avorio); font-family: var(--font-script); font-size: clamp(2rem, 9vw, 3.4rem); line-height: 1; padding: 0; touch-action: manipulation; transition: background-color 0.15s, color 0.15s, transform 0.1s; }
 .quiz__nums button:active { transform: scale(0.95); }
 .quiz__nums button[aria-pressed="true"] { background: var(--oro); color: var(--verde-notte); border-color: var(--oro); }
 .quiz__out { margin-top: 26px; min-height: 5.6em; max-width: 36ch; }
@@ -360,6 +360,9 @@ html.seen .opening, .opening.is-gone { display: none; }
 .plan .pulse { animation: pulse 1.6s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
 @keyframes tw { 50% { opacity: 0.35; } }
 @keyframes pulse { 50% { transform: scale(1.12); opacity: 0.6; } }
+/* schermo basso: la piantina scorre con la pagina, così non copre i comandi */
+@media (max-height: 760px) and (max-width: 899px) { .sim__stage { position: static; } }
+@media (min-height: 761px) and (max-width: 899px) { .sim__panel :is(fieldset, button, input, a, p) { scroll-margin-top: calc(var(--head-h) + 380px); } }
 .sim__sum { margin-top: 10px; font-size: 1.1rem; line-height: 1.4; min-height: 3em; }
 .sim__sum strong { color: var(--oro-chiaro); }
 .sim__panel { display: grid; gap: 22px; }
@@ -428,7 +431,7 @@ fieldset.field { border: 0; margin: 0; padding: 0; min-width: 0; }
 .summary { position: relative; padding: 26px 22px; background: var(--avorio); color: var(--inchiostro); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35); }
 .summary::before { content: ""; position: absolute; inset: 8px; border: 1px solid var(--oro); pointer-events: none; }
 .summary h2 { font-size: 2.8rem; margin-bottom: 8px; }
-.summary dl > div { display: grid; grid-template-columns: 7.2rem 1fr; gap: 10px; padding: 8px 0; border-bottom: 1px solid rgba(22, 36, 27, 0.15); }
+.summary dl > div { display: grid; grid-template-columns: 9rem 1fr; gap: 10px; padding: 8px 0; border-bottom: 1px solid rgba(22, 36, 27, 0.15); }
 .summary dt { font-size: 1rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--oro-scuro); padding-top: 0.2em; }
 .summary dd.is-empty { opacity: 0.55; font-style: italic; }
 .summary .note { margin-top: 14px; }
@@ -457,7 +460,8 @@ fieldset.field { border: 0; margin: 0; padding: 0; min-width: 0; }
   .quiz__nums { grid-template-columns: repeat(4, 1fr); }
 }
 @media (min-width: 900px) {
-  .hero__card { max-width: 580px; margin: 0 0 56px var(--pad); padding: 42px 40px 34px; }
+  .hero__card { max-width: 600px; margin: 0 0 56px var(--pad); padding: 42px 40px 34px; }
+  .hero h1 { font-size: 5.2rem; white-space: nowrap; }
   .hero__card::before { inset: 10px; }
   .hero__card::after { inset: 16px; }
   .hero { padding-left: calc(max(0px, (100vw - 1180px) / 2)); }
@@ -473,7 +477,7 @@ fieldset.field { border: 0; margin: 0; padding: 0; min-width: 0; }
   .nav-inline { display: flex; align-items: center; gap: 6px; }
   .nav-inline a { display: inline-flex; align-items: center; min-height: 48px; padding: 0 14px; text-decoration: none; font-weight: 600; letter-spacing: 0.06em; }
   .nav-inline a[aria-current="page"] { color: var(--oro-chiaro); border-bottom: 1px solid var(--oro); }
-  .nav-inline .btn { min-height: 46px; padding: 0 22px; margin-left: 10px; font-size: 0.95rem; }
+  .nav-inline .btn { min-height: 46px; padding: 0 22px; margin-left: 10px; font-size: 1rem; }
   .nav-inline .btn[aria-current="page"] { border-bottom: 0; color: var(--verde-notte); }
   .dock { display: none; }
   .foot { padding-bottom: 56px; }
